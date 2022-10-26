@@ -1,81 +1,67 @@
 import React from 'react'
-import { useState } from 'react';
-
+import { TextInput, Checkbox, Button, Group, Box } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { DatePicker } from '@mantine/dates';
 //form to take user input to put into birthday unit
-const BirthdayForm = ({ addBirthday }) => {
-    const [birthday, setBirthday] = useState({
-        name: "",
-        currentAge: '',
+
+function BirthdayForm( {addBirthday} ) {
+  const form = useForm({
+    initialValues: {
+        name: '',
         birthdate: '',
         greeted: false,
         gift: '',
-    });
+        currentAge: ''
+    },
 
-    const handleFormChange = (e) => {
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+    },
+  });
 
-        const { name, value } = e.target;
-
-        setBirthday({
-            ...birthday,
-            [name]: value,
-        });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const { name, value } = e.target
-        if (birthday.name) {
-            addBirthday({...birthday, [name]: value});
-            //reset task input
-            setBirthday({...birthday, [name]: ''});
-        }
-    }
-    
-
-
-    return (
-        <form onSubmit={handleSubmit} className='birthday-form'> 
-            <label>
-                Name:
-                <input 
-                    type="text"
-                    name="name"
-                    value={birthday.name}
-                    onChange={handleFormChange}
-                />
-            </label>
-            <label>
-                Birthday
-                <input 
-                    type="date"
-                    name="birthdate"
-                    value={birthday.birthdate}
-                    onChange={handleFormChange}
-                />
-            </label>
-            <label>
-                Gift Idea:
-                <input 
-                    type="text"
-                    name="gift"
-                    value={birthday.gift}
-                    onChange={handleFormChange}
-                />
-            </label>
-            <label>
-                Greeted?
-                <input 
-                    type="checkbox"
-                    name="greeted"
-                    defaultChecked={false}
-                    value={birthday.greeted}
-                    onChange={handleFormChange}
-                />
-            </label>
-
-            <button type='submit'/>
-        </form>
-    );
+const handleSubmit = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target
+        addBirthday({...form, [name]: value});
 }
+
+  return (
+    <Box sx={{ maxWidth: 300 }} mx="auto">
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+            <TextInput
+            withAsterisk
+            label="Name: "
+            placeholder="John Smith"
+            {...form.getInputProps('name')}
+            />
+
+            <DatePicker
+            withAsterisk
+            label="Birthday: "
+            placeholder="Pick date"
+            {...form.getInputProps('birthday')}
+            />
+
+            <TextInput
+            withAsterisk
+            label="Gift Idea: "
+            placeholder="Pick a gift"
+            {...form.getInputProps('gift')}
+            />
+
+            <Checkbox
+            mt="md"
+            label="Greeted?"
+            {...form.getInputProps('greeted', { type: 'checkbox' })}
+            />
+
+            <Group position="right" mt="md">
+                <Button onClick={handleSubmit} type="submit">Submit</Button>
+            </Group>
+        </form>
+    </Box>
+  );
+}
+
 
 export default BirthdayForm
