@@ -5,7 +5,7 @@ import { DatePicker } from '@mantine/dates';
 //form to take user input to put into birthday unit
 
 function BirthdayForm( {addBirthday} ) {
-  const form = useForm({
+  const birthday = useForm({
     initialValues: {
         name: '',
         birthdate: '',
@@ -13,50 +13,45 @@ function BirthdayForm( {addBirthday} ) {
         gift: '',
         currentAge: ''
     },
-
-    validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-    },
   });
 
 const handleSubmit = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target
-        addBirthday({...form, [name]: value});
+    console.log(e)
+    addBirthday({...birthday, ...e});
 }
 
   return (
     <Box sx={{ maxWidth: 300 }} mx="auto">
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={birthday.onSubmit(handleSubmit)}>
             <TextInput
             withAsterisk
             label="Name: "
             placeholder="John Smith"
-            {...form.getInputProps('name')}
+            {...birthday.getInputProps('name')}
             />
 
             <DatePicker
             withAsterisk
             label="Birthday: "
             placeholder="Pick date"
-            {...form.getInputProps('birthday')}
+            {...birthday.getInputProps('birthdate')}
             />
 
             <TextInput
             withAsterisk
             label="Gift Idea: "
             placeholder="Pick a gift"
-            {...form.getInputProps('gift')}
+            {...birthday.getInputProps('gift')}
             />
 
             <Checkbox
             mt="md"
             label="Greeted?"
-            {...form.getInputProps('greeted', { type: 'checkbox' })}
+            {...birthday.getInputProps('greeted', { type: 'checkbox' })}
             />
 
             <Group position="right" mt="md">
-                <Button onClick={handleSubmit} type="submit">Submit</Button>
+                <Button type="submit">Submit</Button>
             </Group>
         </form>
     </Box>

@@ -6,7 +6,7 @@ function BirthdayList ({ birthdays }) {
     return (
         <ul>
             {birthdays.map(birthday => (
-                <Birthday key={birthday.name} birthday={birthday} />
+                <Birthday key={birthdays.indexOf(birthday)} birthday={birthday} />
             ))}
         </ul>
     );

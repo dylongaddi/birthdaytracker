@@ -5,12 +5,13 @@ import BirthdayForm from './Components/BirthdayForm';
 import BirthdayList from './Components/BirthdaysList';
 
 
+
 const App = () => {
   const [birthdays, setBirthdays] = useState([]);
   //adds birthdays to list of birthdays to be rendered
   const addBirthday = (birthday) => {
     setBirthdays([birthday, ...birthdays])
-
+    console.log(...birthdays)
     // this pushes to beginning of arr/unshift - setBirthdays([birthday, ...birthdays])
   }
 
